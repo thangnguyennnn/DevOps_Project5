@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thangnh35-capstone-app-${LABEL_VERSION}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thangnh35-capstone-app
+      version: ${LABEL_VERSION}
+  template:
+    metadata:
+      labels:
+        app: thangnh35-capstone-app
+        version: ${LABEL_VERSION}
+    spec:
+      containers:
+      - name: thangnh35-capstone-app
+        image: ${DOCKER_IMAGE}
+        ports:
+        - containerPort: 80
