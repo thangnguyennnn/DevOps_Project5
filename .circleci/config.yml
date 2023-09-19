@@ -66,12 +66,6 @@ jobs:
             source .devops-capstone/bin/activate
             make lint
 
-      - run:
-          name: Create Cluster
-          command: |
-            source .devops-capstone/bin/activate
-            make eks-create-cluster
-
   build-and-push-docker-image:
     docker:
       - image: cimg/node:13.8.0
