@@ -43,11 +43,9 @@ jobs:
       - image: cimg/python:3.7.13
     steps:
       - checkout
-      # Download and cache dependencies
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "app/requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run:
           name: Install dependencies
@@ -78,19 +76,13 @@ jobs:
           command: |
             export VERSION=$(<app/version.txt)
             
-            # Build docker image
             docker build -t thangnh35-capstone-app app
             
-            # Tag image
             docker tag thangnh35-capstone-app ${DOCKER_HUB_ID}/${DOCKER_REPOSITORY}:${VERSION}
             docker tag thangnh35-capstone-app ${DOCKER_HUB_ID}/${DOCKER_REPOSITORY}:lastest
-            
-            # Login to docker-hub
+
             docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
             
-            # We publish two images with different version tags: 
-            # - numbered version
-            # - "latest"
             docker push ${DOCKER_HUB_ID}/${DOCKER_REPOSITORY}:${VERSION}
             docker push ${DOCKER_HUB_ID}/${DOCKER_REPOSITORY}:lastest
 
@@ -118,7 +110,6 @@ jobs:
             
             envsubst < k8s/deployment.yaml | kubectl apply --filename -
             
-            # service-green.yaml creates the thangnh35-capstone-app-green service
             envsubst < k8s/service-green.yaml | kubectl apply --filename -
 
             sleep 3
