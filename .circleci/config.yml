@@ -118,6 +118,10 @@ jobs:
               --output jsonpath='{.status.loadBalancer.ingress[0].hostname}')
             echo "LOAD_BALANCER: $LOAD_BALANCER"
 
+            echo " $(kubectl get pod)"
+
+            echo " $(kubectl get services)"
+
   wait-manual-approval:
     docker:
       - image: cimg/node:13.8.0
